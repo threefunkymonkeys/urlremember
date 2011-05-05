@@ -1,0 +1,13 @@
+- if (err)
+  .error= err
+
+!= partial('submit')
+
+section( id="resources" )
+  h1 You still have #{resources.length} resources to read...
+
+  p( style="text-align: center" )
+    a( href="/visited" )
+      small Items you already read
+
+  != partial('resource', resources)

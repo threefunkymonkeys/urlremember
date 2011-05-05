@@ -1,0 +1,13 @@
+!!!5
+html
+  head
+    title Favurls
+    meta( name="viewport", content="user-scalable=no, width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0" )
+    link(href='http://fonts.googleapis.com/css?family=Orbitron', rel='stylesheet', type='text/css')
+    link(href='http://fonts.googleapis.com/css?family=Terminal+Dosis+Light', rel='stylesheet', type='text/css')
+    link(rel='stylesheet', href='/stylesheets/style.css')
+  body
+    != body
+    script( src="https://ajax.googleapis.com/ajax/libs/jquery/1.5.2/jquery.min.js" )
+    script
+      $('a.remove').click(function() { return confirm("Sure to remove this resource?"); }).show();

@@ -1,0 +1,10 @@
+article( id="resource-" + resource.id )
+  h1
+    a( href="/visit/" + encodeURIComponent(resource.url), target="_blank" )= resource.title || 'Untitled'
+  a.url( href="/visit/" + encodeURIComponent(resource.url), target="_blank" )= resource.url
+  footer
+    .actions
+      a.remove( href="/forget/" + resource.id, title="Remove resource" ) delete
+      a.twitter( href="https://twitter.com/home?status=" + encodeURIComponent(resource.title) + " " + encodeURIComponent(resource.url), title="Post to twitter" ) twitter
+    time( datetime=resource.created.toISOString() )= relativeDate(resource.created)
+    span.visits( data-visits=resource.visits ) #{resource.visits} views

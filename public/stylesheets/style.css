@@ -1,0 +1,102 @@
+body {
+    padding: 0 10%;
+    margin: 0 auto;
+    font-family: "Lucida Grande", Helvetica, Arial, sans-serif;
+    max-width: 768px;
+}
+
+h1 {
+    text-align: center;
+    font-family: 'Orbitron', Arial, sans-serif;
+}
+
+article, section {
+    margin: 1em 0;
+}
+
+article { opacity: 0.75; }
+article:hover { opacity: 1; }
+
+article h1 {
+    text-align: left;
+    font-family: inherit;
+    margin: 1em 0 0;
+    word-wrap: break-word;
+}
+
+h1 a {
+    text-decoration: none;
+    color: inherit;
+}
+
+a {
+  color: #00B7FF;
+}
+
+a.url {
+    word-wrap: break-word;
+    font-size: 0.8em;
+}
+
+footer span:before { content: ' » ' }
+
+footer { position: relative; line-height: 18px; }
+
+.actions {
+    position: absolute;
+    right: 0;
+    width: 100px;
+    text-align: right;
+    opacity: 0.5;
+}
+
+.actions:hover {
+    opacity: 1;
+}
+
+.actions:hover > a {
+    opacity: 0.5;
+}
+
+.actions:hover > a:hover {
+    opacity: 1;
+}
+
+.actions a {
+    margin-left: 0.25em;
+    color: transparent;
+    font-size: 16px;
+}
+
+.actions a.twitter { background: url(/images/twitter.png) no-repeat center center; }
+.actions a.remove { background: url(/images/remove.gif) no-repeat center center; display: none; }
+
+#resources article {
+    padding: 0 0 1em;
+    border-bottom: 1px solid black;
+}
+
+#resources article:last-child {
+    border-bottom: none;
+}
+
+input[name="url"] {
+    display: block;
+    width: 90%;
+    margin: 0.25em auto;
+    border: 1px solid black;
+    border-radius: 0.5em;
+    font-size: 1.5em;
+    padding: 0.25em 0.5em;
+    font-family: 'Terminal Dosis Light', Arial, serif;
+}
+
+@media screen and (max-width: 480px) {
+    body {
+        font-size: 10px;
+    }
+
+    a.url {
+        font-size: 1em;
+    }
+}

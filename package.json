@@ -1,0 +1,21 @@
+{
+  "author": "Leandro López <inkel.ar@gmail.com> (inkel)",
+  "name": "urlremember",
+  "description": "Application to easily bookmark URLs and list them, in order to read them.",
+  "version": "0.1.0",
+  "repository": {
+    "url": ""
+  },
+  "engines": {
+    "node": "v0.5.0-pre"
+  },
+  "dependencies": {
+      "express": "2.3.3",
+      "date-utils": "0.1.8",
+      "jade": "0.10.7",
+      "mongoose": "1.3.3",
+      "mongoose-types": "1.0.3",
+      "relative-date": "1.0.0"
+  },
+  "devDependencies": {}
+}

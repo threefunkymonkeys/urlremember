@@ -1,0 +1,9 @@
+- if (err)
+  .error= err
+
+!= partial('submit')
+
+section( id="resources" )
+  h1 You already read these #{resources.length} resources...
+
+  != partial('resource', resources)
