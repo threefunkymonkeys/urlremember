@@ -19,16 +19,13 @@ config =
 mongoose = require "mongoose"
 mongoose.connect( config.db )
 
-mongooseTypes = require("mongoose-types")
-mongooseTypes.loadTypes(mongoose, "url")
-
 Schema = mongoose.Schema
 ObjectId = Schema.ObjectId
 
 ResourceSchema = new Schema
   url:
     type: String
-    index: true
+    unique: true
   title:
     type: String
   created:
@@ -40,8 +37,8 @@ ResourceSchema = new Schema
     default: 0
 
 ResourceSchema.static
-  latest: (callback) ->
-    this.find({}).where('visits', 0).sort('created', -1).limit(25).execFind(callback)
+  unread: (callback) ->
+    this.find({}).where('visits', 0).sort('created', -1).execFind(callback)
 
   visited: (callback) ->
     this.find({}).where('visits', { '$gt': 0 }).sort('visits', -1).limit(25).execFind(callback)
@@ -52,9 +49,16 @@ ResourceSchema.static
       title.join ' '
     else
       'Untitled'
-    this.update { url }, { url, title }, { upsert: true }, callback
 
-# ResourceSchema.plugin mongooseTypes.useTimestamps
+    Resource.findOne { url }, (err, doc) ->
+      console.error if err
+      resource = if doc
+        doc.title = title
+        doc
+      else
+        resource = new Resource { url, title }
+      resource.save callback
+
 
 mongoose.model 'Resource', ResourceSchema
 Resource = mongoose.model 'Resource'
@@ -85,7 +89,7 @@ app.configure "production", ->
   app.use express.errorHandler()
 
 app.get "/", (req, res) ->
-  Resource.latest (err, resources) ->
+  Resource.unread (err, resources) ->
     res.render "index",
       { resources, err, relativeDate }
 
@@ -98,6 +102,7 @@ app.post "/remember", (req, res) ->
     unless err
       res.redirect "/"
     else
+      console.error err
       res.render "index", req.params
 
 app.get "/forget/:id", (req, res) ->

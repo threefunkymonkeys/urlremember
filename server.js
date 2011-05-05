@@ -1,5 +1,5 @@
 (function() {
-  var ObjectId, Resource, ResourceSchema, Schema, app, config, express, mongoose, mongooseTypes, relativeDate;
+  var ObjectId, Resource, ResourceSchema, Schema, app, config, express, mongoose, relativeDate;
   var __slice = Array.prototype.slice;
   relativeDate = require("relative-date");
   require("date-utils");
@@ -20,14 +20,12 @@
   })();
   mongoose = require("mongoose");
   mongoose.connect(config.db);
-  mongooseTypes = require("mongoose-types");
-  mongooseTypes.loadTypes(mongoose, "url");
   Schema = mongoose.Schema;
   ObjectId = Schema.ObjectId;
   ResourceSchema = new Schema({
     url: {
       type: String,
-      index: true
+      unique: true
     },
     title: {
       type: String
@@ -43,8 +41,8 @@
     }
   });
   ResourceSchema.static({
-    latest: function(callback) {
-      return this.find({}).where('visits', 0).sort('created', -1).limit(25).execFind(callback);
+    unread: function(callback) {
+      return this.find({}).where('visits', 0).sort('created', -1).execFind(callback);
     },
     visited: function(callback) {
       return this.find({}).where('visits', {
@@ -55,14 +53,19 @@
       var title, _ref;
       _ref = url.split(" "), url = _ref[0], title = 2 <= _ref.length ? __slice.call(_ref, 1) : [];
       title = title ? title.join(' ') : 'Untitled';
-      return this.update({
+      return Resource.findOne({
         url: url
-      }, {
-        url: url,
-        title: title
-      }, {
-        upsert: true
-      }, callback);
+      }, function(err, doc) {
+        var resource;
+        if (err) {
+          console.error;
+        }
+        resource = doc ? (doc.title = title, doc) : resource = new Resource({
+          url: url,
+          title: title
+        });
+        return resource.save(callback);
+      });
     }
   });
   mongoose.model('Resource', ResourceSchema);
@@ -92,7 +95,7 @@
     return app.use(express.errorHandler());
   });
   app.get("/", function(req, res) {
-    return Resource.latest(function(err, resources) {
+    return Resource.unread(function(err, resources) {
       return res.render("index", {
         resources: resources,
         err: err,
@@ -109,6 +112,7 @@
       if (!err) {
         return res.redirect("/");
       } else {
+        console.error(err);
         return res.render("index", req.params);
       }
     });
